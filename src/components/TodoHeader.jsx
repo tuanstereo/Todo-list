@@ -11,6 +11,7 @@ class Header extends Component {
   }
   updatejob = () => {
     this.props.handleUpdateJob(parseInt(this.valueJob.current.id), this.valueJob.current.value)
+    this.valueJob.current.value = ""
   }
   render() {
     const {addjob, updatejob, valueJob} = this
@@ -20,8 +21,8 @@ class Header extends Component {
       <div className="input-group mb-3">
         <input type="text" class="form-control" id={this.props.job.id || ""} ref={valueJob} />
         <div className="input-group-append">
-          <button className="btn btn-outline-secondary" onClick={addjob} type="button">Add</button>
-          <button className="btn btn-outline-secondary" onClick={updatejob} type="button">Update</button>
+          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={addjob} type="button">Add</button>
+          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={updatejob} type="button">Update</button>
         </div>
       </div>
     )
