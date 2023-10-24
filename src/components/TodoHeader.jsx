@@ -1,28 +1,52 @@
 import React, { Component, memo } from 'react'
 
 class Header extends Component {
+  state = {
+    id: "",
+    value:""
+  }
   valueJob = React.createRef();
   addjob = () => {
-    this.props.handleSubmitJob({ id: Math.floor(Math.random() * 1000), valueJob: this.valueJob.current.value, done: false })
+    console.log(this.state.id);
+    this.props.handleSubmitJob({ id: Math.floor(Math.random() * 100000), valueJob: this.valueJob.current.value, done: false })
     this.valueJob.current.value = ""
   }
-  showJob = job => {
-    this.valueJob.current.value = job.valueJob
+  showJob = (id, value) => {
+    this.valueJob.current.value = value
+    this.setState({
+      id,
+      value
+    })
   }
-  updatejob = () => {
-    this.props.handleUpdateJob(parseInt(this.valueJob.current.id), this.valueJob.current.value)
+  updateJob = () => {
+    console.log(this.state.id);
+    this.props.handleUpdateJob(parseInt(this.state.id),this.valueJob.current.value )
+    this.setState({
+      id : "",
+      value: ""
+    })
     this.valueJob.current.value = ""
+  }
+  submitJob = (e) => {
+    const {id} = this.state
+    if (e.keyCode === 13) {
+      if ( id.length === 0) {  
+        this.addjob()
+      } else {
+        this.updatejob()
+      }
+    } 
+  }
+  handlesubmitJob = () => {
+    this.state.id.length === 0 ? this.addjob() : this.updateJob()
   }
   render() {
-    const {addjob, updatejob, valueJob} = this
-    this.props.updateStatus && (this.showJob(this.props.job))
+    const {submitJob, handlesubmitJob, valueJob} = this
     return (
-
       <div className="input-group mb-3">
-        <input type="text" class="form-control" id={this.props.job.id || ""} ref={valueJob} />
+        <input type="text" className="form-control" ref={valueJob}  onKeyDown={submitJob}/>
         <div className="input-group-append">
-          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={addjob} type="button">Add</button>
-          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={updatejob} type="button">Update</button>
+          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={handlesubmitJob} type="button">submit</button>
         </div>
       </div>
     )

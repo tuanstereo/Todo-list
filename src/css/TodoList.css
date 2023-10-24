@@ -2,8 +2,11 @@
     text-decoration: line-through;
 }
 .list-Job{
-    height: 300px;
-    overflow: hidden;
+    height: 200px;
+    overflow-y: scroll;
+}
+.list-Job::-webkit-scrollbar{
+    /* display: none; */
 }
 .job-group{
     border: 1px solid;
@@ -21,4 +24,12 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+.btn-active{
+    background-color: #44545c !important;
+    color: #fff !important;
+}
+.btn-page{
+    border: 1px solid #44545c !important;
+    margin: 0 5px;
 }
