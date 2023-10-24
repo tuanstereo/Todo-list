@@ -1,12 +1,11 @@
 import React, { Component, memo } from 'react'
-import { active, fillterAll, unfinished } from '../constant/constJobTodo'
+import { statusJob } from '../constant/constJobTodo'
 
 class ToDoFooter extends Component {
   showJobArr = (action) => {
-    this.props.handleUpdateFilter(action)
-  }
+    this.props.handletotalJob(action)  }
   render() {
-    console.log("footer Re-render", this.props.totalJob);
+    const {active, fillterAll, unfinished} = statusJob
     return (
       <>
         <div className='footer'>
