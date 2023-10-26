@@ -5,3 +5,4 @@ export const statusJob = {
     unfinished : "unfinished",
     fillterAll : "fillterAll"
 }
+export const pageSize = 10
