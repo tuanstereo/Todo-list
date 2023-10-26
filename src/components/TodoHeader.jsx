@@ -7,8 +7,7 @@ class Header extends Component {
   }
   valueJob = React.createRef();
   addjob = () => {
-    console.log(this.state.id);
-    this.props.handleSubmitJob({ id: Math.floor(Math.random() * 100000), valueJob: this.valueJob.current.value, done: false })
+    this.props.handleSubmitJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: this.valueJob.current.value, done: false })
     this.valueJob.current.value = ""
   }
   showJob = (id, value) => {
@@ -19,7 +18,6 @@ class Header extends Component {
     })
   }
   updateJob = () => {
-    console.log(this.state.id);
     this.props.handleUpdateJob(parseInt(this.state.id),this.valueJob.current.value )
     this.setState({
       id : "",
@@ -27,13 +25,14 @@ class Header extends Component {
     })
     this.valueJob.current.value = ""
   }
+
   submitJob = (e) => {
     const {id} = this.state
     if (e.keyCode === 13) {
       if ( id.length === 0) {  
         this.addjob()
       } else {
-        this.updatejob()
+        this.updateJob()
       }
     } 
   }

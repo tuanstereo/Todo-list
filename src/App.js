@@ -14,18 +14,13 @@ export default class App extends Component {
   headerRef = React.createRef()
   todoListRef = React.createRef()
   handleSubmitJob = job => {
-    if (this.state.fillterByStatusJob === statusJob.active) {
-      this.setState({
-        arrJob: [...this.state.arrJob, job],
-        updateStatus: false
-      })
-    } else {
+    if (!(this.state.fillterByStatusJob === statusJob.active)) {
       this.todoListRef.current.updateJobs([...this.state.arrJob, job])
-      this.setState({
-        arrJob: [...this.state.arrJob, job],
-        updateStatus: false
-      })
-    }
+    } 
+    this.setState({
+      arrJob: [...this.state.arrJob, job],
+      updateStatus: false
+    })
   }
   handleUpdateJob = (id, value) => {
     this.state.arrJob.find(JobItem => JobItem.id === id && (JobItem.valueJob = value))
@@ -42,11 +37,11 @@ export default class App extends Component {
         this.setState({
           arrJob: this.state.arrJob
         })
-      this.todoListRef.current.updateJobs(arrJob)
+      this.todoListRef.current.updateValueJob(true, job)
         break;
       case statusJob.active:
         arrJob.find( item => item.id === job.id && (item.done = !item.done))
-        this.todoListRef.current.updateJobs(arrJob)
+        this.todoListRef.current.updateValueJob(true)
         break;
       case updateJob:
         this.headerRef.current.showJob(job.id, job.valueJob)
@@ -64,33 +59,37 @@ export default class App extends Component {
   }
   handletotalJob = (action) => {
     const { arrJob } = this.state
+    const {unfinished,active} = statusJob
     let newJobs = []
     switch (action) {
-      case statusJob.unfinished:
+      case unfinished:
          newJobs = arrJob.reduce((accumulator, currentJob) => {
           if (!currentJob.done) {
             accumulator = [...accumulator, currentJob]
           }
           return accumulator
          }, [])
-        this.todoListRef.current.updateJobs(newJobs)
+        this.todoListRef.current.updateJobs(newJobs, action)
         break;
-      case statusJob.active:
+      case active:
         newJobs = arrJob.reduce((accumulator, currentJob) => {
           if (currentJob.done) {
             accumulator = [...accumulator, currentJob]
           }
           return accumulator
          }, [])
-         this.todoListRef.current.updateJobs(newJobs)
+         this.todoListRef.current.updateJobs(newJobs, action)
         break
       default:
-        this.todoListRef.current.updateJobs(arrJob)
-
+        this.todoListRef.current.updateJobs(arrJob, action)
     }
+    this.setState({
+      fillterByStatusJob: action
+    })
   }
   render() {
     const { updateStatus, arrJob, fillterByStatusJob } = this.state
+    console.log(fillterByStatusJob);
     const { todoListRef, headerRef, handletotalJob, handleSubmitJob, handleUpdateJob, handleUpdateStatusJob, handleUpdateFilter } = this
     return (
       <>
