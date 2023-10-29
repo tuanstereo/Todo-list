@@ -4,6 +4,8 @@ import { AiOutlineDelete } from "react-icons/ai"
 import { MdOutlineDone } from 'react-icons/md'
 import { TiDeleteOutline } from "react-icons/ti"
 import { RxUpdate } from "react-icons/rx"
+import { contextTheme } from '../App';
+
 class TodosList extends Component {
     listRef = React.createRef()
     state = {
@@ -55,25 +57,32 @@ class TodosList extends Component {
     render() {
         const { jobs } = this.state
         const { active } = statusJob
-        const {handleUpdateStatusJob} = this.props
+        const { handleUpdateStatusJob } = this.props
         return (
-            <>
-                <h4>total {jobs.length}</h4>
-                <div ref={this.listRef} className='list-Job' onScroll={this.AddJobs}>
-                    {
-                        jobs.map(job =>
-                            <div key={job.id} className='d-flex justify-content-between align-items-center job-group mb-2'>
-                                <h4 className={job.done ? "active" : ""} >{job.valueJob}</h4>
-                                <div className='pb-2'>
-                                    <button onClick={() => { handleUpdateStatusJob(job, deleteJob) }}><AiOutlineDelete /></button>
-                                    <button onClick={() => { handleUpdateStatusJob(job, active) }}>{job.done ? <TiDeleteOutline /> : <MdOutlineDone />}</button>
-                                    <button onClick={() => { handleUpdateStatusJob(job, updateJob) }}><RxUpdate /></button>
-                                </div>
+            <contextTheme.Consumer>
+                {(props) => {
+                    return (
+                        <div className={props}>
+                            <h4>total {jobs.length}</h4>
+                            <hr style={{marginBottom :0}} />
+                            <div ref={this.listRef} className='list-Job' onScroll={this.AddJobs}>
+                                {
+                                    jobs.map(job =>
+                                        <div key={job.id} className='d-flex justify-content-between align-items-center job-group mb-2'>
+                                            <h4 className={job.done ? "active" : ""} >{job.valueJob}</h4>
+                                            <div className={'pb-2 ' + props}>
+                                                <button onClick={() => { handleUpdateStatusJob(job, deleteJob) }}><AiOutlineDelete /></button>
+                                                <button onClick={() => { handleUpdateStatusJob(job, active) }}>{job.done ? <TiDeleteOutline /> : <MdOutlineDone />}</button>
+                                                <button onClick={() => { handleUpdateStatusJob(job, updateJob) }}><RxUpdate /></button>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>
-                        )
-                    }
-                </div>
-            </>
+                        </div>
+                    )
+                }}
+            </contextTheme.Consumer>
         );
     }
 }

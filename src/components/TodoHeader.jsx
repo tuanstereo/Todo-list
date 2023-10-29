@@ -1,4 +1,5 @@
 import React, { Component, memo } from 'react'
+import { contextTheme } from '../App';
 
 class Header extends Component {
   state = {
@@ -42,12 +43,19 @@ class Header extends Component {
   render() {
     const {submitJob, handlesubmitJob, valueJob} = this
     return (
-      <div className="input-group mb-3">
-        <input type="text" className="form-control" ref={valueJob}  onKeyDown={submitJob}/>
-        <div className="input-group-append">
-          <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={handlesubmitJob} type="button">submit</button>
-        </div>
-      </div>
+        <contextTheme.Consumer>
+          { props => {
+            return (
+              <div className={"input-group mb-3 header-group "+ props}>
+              <input type="text" className="form-control input-form" ref={valueJob}  onKeyDown={submitJob}/>
+              <div className="input-group-append">
+                <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={handlesubmitJob} type="button">submit</button>
+              </div>
+            </div>
+            )
+          }}
+        </contextTheme.Consumer>
+
     )
   }
 }

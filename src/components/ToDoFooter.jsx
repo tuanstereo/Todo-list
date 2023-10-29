@@ -1,5 +1,6 @@
 import React, { Component, memo } from 'react'
 import { statusJob } from '../constant/constJobTodo'
+import { contextTheme } from '../App';
 
 class ToDoFooter extends Component {
   showJobArr = (action) => {
@@ -7,8 +8,10 @@ class ToDoFooter extends Component {
   render() {
     const {active, fillterAll, unfinished} = statusJob
     return (
-      <>
-        <div className='footer'>
+      <contextTheme.Consumer>
+        { props => {
+          return (
+            <div className={'footer ' + props}>
           <label htmlFor="">{this.props.totalJob} Job</label>
           <div>
             <button className='btn' onClick={() => { this.showJobArr(fillterAll) }}>All</button>
@@ -16,7 +19,9 @@ class ToDoFooter extends Component {
             <button className='btn' onClick={() => { this.showJobArr(unfinished) }}>unfinished</button>
           </div>
         </div>
-      </>
+          )
+        }}
+      </contextTheme.Consumer>
     )
   }
 }

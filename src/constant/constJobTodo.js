@@ -5,4 +5,8 @@ export const statusJob = {
     unfinished : "unfinished",
     fillterAll : "fillterAll"
 }
+export const theme = {
+    light: "light-theme",
+    dark: "dark-theme"
+}
 export const pageSize = 10
