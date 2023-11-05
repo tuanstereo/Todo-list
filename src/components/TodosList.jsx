@@ -49,7 +49,7 @@ class TodosList extends Component {
     }
     handleAddJobs = (e) => {
         const { jobs, toTalJobs } = this.state
-        this.getMore(this.props.addJobs(e.target.scrollHeight - e.target.scrollTop, jobs, toTalJobs))
+        this.getMore(this.props.addJobs(e.target.scrollHeight - e.target.scrollTop, jobs.length, toTalJobs.length))
     }
     render() {
         const { jobs } = this.state
