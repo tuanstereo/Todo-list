@@ -5,11 +5,9 @@ import { MdOutlineDone } from 'react-icons/md'
 import { TiDeleteOutline } from "react-icons/ti"
 import { RxUpdate } from "react-icons/rx"
 import { contextTheme } from '../App';
-
 class TodosList extends Component {
     listRef = React.createRef()
     state = {
-        isAddJobs: true,
         toTalJobs: [],
         jobs: [],
         isUpdateJob: false,
@@ -31,6 +29,7 @@ class TodosList extends Component {
             })
         }
     }
+
     updateJobs(jobs, action) {
         action && (this.listRef.current.scrollTop = 0)
         let newJobs = jobs.slice(0, pageSize)
@@ -40,19 +39,17 @@ class TodosList extends Component {
             jobs: newJobs
         })
     }
-    getMore = index => {
+
+    getMore = lengthJob => {
         let { toTalJobs, jobs } = this.state
-        let newJobs = toTalJobs.slice(index, index + pageSize)
-        this.setState({
-            isAddJobs: true,
-            jobs: [...jobs, ...newJobs],
+        let newJobs = toTalJobs.slice(lengthJob, lengthJob + pageSize)
+        lengthJob && this.setState({
+            jobs: [...jobs, ...newJobs]
         })
     }
-    AddJobs = (e) => {
-        const { isAddJobs, jobs, toTalJobs } = this.state
-        if (e.target.scrollHeight - e.target.scrollTop <= 300 && isAddJobs && jobs.length <= toTalJobs.length) {
-            this.getMore(jobs.length)
-        }
+    handleAddJobs = (e) => {
+        const { jobs, toTalJobs } = this.state
+        this.getMore(this.props.addJobs(e.target.scrollHeight - e.target.scrollTop, jobs, toTalJobs))
     }
     render() {
         const { jobs } = this.state
@@ -64,16 +61,16 @@ class TodosList extends Component {
                     return (
                         <div className={props}>
                             <h4>total {jobs.length}</h4>
-                            <hr style={{marginBottom :0}} />
-                            <div ref={this.listRef} className='list-Job' onScroll={this.AddJobs}>
+                            <hr style={{ marginBottom: 0 }} />
+                            <div ref={this.listRef} className='list-Job' onScroll={this.handleAddJobs}>
                                 {
                                     jobs.map(job =>
                                         <div key={job.id} className='d-flex justify-content-between align-items-center job-group mb-2'>
                                             <h4 className={job.done ? "active" : ""} >{job.valueJob}</h4>
                                             <div className={'pb-2 ' + props}>
-                                                <button onClick={() => { handleUpdateStatusJob(job, deleteJob) }}><AiOutlineDelete /></button>
-                                                <button onClick={() => { handleUpdateStatusJob(job, active) }}>{job.done ? <TiDeleteOutline /> : <MdOutlineDone />}</button>
-                                                <button onClick={() => { handleUpdateStatusJob(job, updateJob) }}><RxUpdate /></button>
+                                                <button onClick={() => handleUpdateStatusJob(job, deleteJob)}><AiOutlineDelete /></button>
+                                                <button onClick={() => handleUpdateStatusJob(job, active)}>{job.done ? <TiDeleteOutline /> : <MdOutlineDone />}</button>
+                                                <button onClick={() => handleUpdateStatusJob(job, updateJob)}><RxUpdate /></button>
                                             </div>
                                         </div>
                                     )

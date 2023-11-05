@@ -10,3 +10,4 @@ export const theme = {
     dark: "dark-theme"
 }
 export const pageSize = 10
+export const lengthTriggerScroll = 300

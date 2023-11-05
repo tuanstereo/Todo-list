@@ -4,8 +4,9 @@ import TodosList from './components/TodosList'
 import { deleteJob, statusJob, updateJob,theme } from './constant/constJobTodo'
 import "../src/css/TodoList.css"
 import ToDoFooter from './components/ToDoFooter'
+import ScrollHOC from './HOC/ScrollHOC'
 export const contextTheme = React.createContext()
-
+const TodoList = ScrollHOC(TodosList)
 export default class App extends Component {
   state = {
     arrJob: [],
@@ -96,7 +97,6 @@ export default class App extends Component {
   render() {
     const { updateStatus, arrJob, fillterByStatusJob, themeActive } = this.state
     const { todoListRef, headerRef,handleChangeTheme, handletotalJob, handleSubmitJob, handleUpdateJob, handleUpdateStatusJob, handleUpdateFilter } = this
-    console.log(themeActive);
     return (
       <contextTheme.Provider value={themeActive}>
        <label>
@@ -109,7 +109,7 @@ export default class App extends Component {
           <div className={"col-5 text-center "}>
             <h2 >Todo List</h2>
             <Header handleSubmitJob={handleSubmitJob} updateStatus={updateStatus} ref={headerRef} handleUpdateJob={handleUpdateJob} />
-            <TodosList  ref={todoListRef} fillterByStatusJob={fillterByStatusJob} handleUpdateStatusJob={handleUpdateStatusJob} />
+            <TodoList ref={todoListRef} fillterByStatusJob={fillterByStatusJob} handleUpdateStatusJob={handleUpdateStatusJob}/>
             <ToDoFooter handleUpdateFilter={handleUpdateFilter} handletotalJob={handletotalJob} totalJob={arrJob.length} />
           </div>
         </div>
