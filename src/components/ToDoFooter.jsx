@@ -12,7 +12,7 @@ class ToDoFooter extends Component {
         { props => {
           return (
             <div className={'footer ' + props}>
-          <label htmlFor="">{this.props.totalJob} Job</label>
+          <p htmlFor="">{this.props.totalJob} Job</p>
           <div>
             <button className='btn' onClick={() => { this.showJobArr(fillterAll) }}>All</button>
             <button className='btn' onClick={() => { this.showJobArr(active) }}>Done</button>
