@@ -1,28 +1,29 @@
-import React, { Component, memo } from 'react'
+import React, { memo } from 'react'
 import { statusJob } from '../constant/constJobTodo'
 import { contextTheme } from '../App';
-
-class ToDoFooter extends Component {
-  showJobArr = (action) => {
-    this.props.handletotalJob(action)  }
-  render() {
-    const {active, fillterAll, unfinished} = statusJob
-    return (
-      <contextTheme.Consumer>
-        { props => {
-          return (
-            <div className={'footer ' + props}>
-          <p htmlFor="">{this.props.totalJob} Job</p>
-          <div>
-            <button className='btn' onClick={() => { this.showJobArr(fillterAll) }}>All</button>
-            <button className='btn' onClick={() => { this.showJobArr(active) }}>Done</button>
-            <button className='btn' onClick={() => { this.showJobArr(unfinished) }}>unfinished</button>
-          </div>
-        </div>
-          )
-        }}
-      </contextTheme.Consumer>
-    )
+const ToDoFooter = (props) => {
+const {handletotalJob, totalJob, fillterByStatusJob} = props
+const { active, fillterAll, unfinished } = statusJob
+ const showJobArr = (action) => {
+    handletotalJob(action)
   }
+  console.log('footer');
+  return (
+    <contextTheme.Consumer>
+      {props => {
+        return (
+          <div className={'footer ' + props}>
+            <p className='totalJob' htmlFor="">{totalJob} Job</p>
+            <div>
+              <button className={fillterByStatusJob === fillterAll ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(fillterAll) }}>All</button>
+              <button className={fillterByStatusJob === active ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(active) }}>Done</button>
+              <button className={fillterByStatusJob === unfinished ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(unfinished) }}>unfinished</button>
+            </div>
+          </div>
+        )
+      }}
+    </contextTheme.Consumer>
+  )
+
 }
 export default memo(ToDoFooter)
