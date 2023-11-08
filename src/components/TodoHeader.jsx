@@ -1,62 +1,62 @@
-import React, { Component, memo } from 'react'
+import React, {  memo, useImperativeHandle, useRef, useState } from 'react'
 import { contextTheme } from '../App';
 
-class Header extends Component {
-  state = {
-    id: "",
-    value:""
+const Header = React.forwardRef((props, ref) => {
+  console.log('header');
+  const [state, setState] = useState({ id: "", value: "" })
+  const { id } = state
+  const {handleSubmitJob, handleUpdateJob} = props
+  const valueJob = useRef();
+
+  const addjob = () => {
+    handleSubmitJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: valueJob.current.value, done: false })
+    valueJob.current.value = ""
   }
-  valueJob = React.createRef();
-  addjob = () => {
-    this.props.handleSubmitJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: this.valueJob.current.value, done: false })
-    this.valueJob.current.value = ""
-  }
-  showJob = (id, value) => {
-    this.valueJob.current.value = value
-    this.setState({
-      id,
-      value
-    })
-  }
-  updateJob = () => {
-    this.props.handleUpdateJob(parseInt(this.state.id),this.valueJob.current.value )
-    this.setState({
-      id : "",
+  useImperativeHandle(ref, () => ({
+    showJob(id, value) {
+      valueJob.current.value = value
+      setState({
+        id,
+        value
+      })
+    }
+  }))
+
+  const updateJob = () => {
+    handleUpdateJob(parseInt(id), valueJob.current.value)
+    setState({
+      id: "",
       value: ""
     })
-    this.valueJob.current.value = ""
+    valueJob.current.value = ""
   }
 
-  submitJob = (e) => {
-    const {id} = this.state
+  const submitJob = (e) => {
     if (e.keyCode === 13) {
-      if ( id.length === 0) {  
-        this.addjob()
+      if (id.length === 0) {
+        addjob()
       } else {
-        this.updateJob()
+        updateJob()
       }
-    } 
+    }
   }
-  handlesubmitJob = () => {
-    this.state.id.length === 0 ? this.addjob() : this.updateJob()
+  const handlesubmitJob = () => {
+    id.length === 0 ? addjob() : updateJob()
   }
-  render() {
-    const {submitJob, handlesubmitJob, valueJob} = this
-    return (
-        <contextTheme.Consumer>
-          { props => {
-            return (
-              <div className={"input-group mb-3 header-group "+ props}>
-              <input type="text" className="form-control input-form" ref={valueJob}  onKeyDown={submitJob}/>
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary" style={{marginLeft:"5px"}} onClick={handlesubmitJob} type="button">submit</button>
-              </div>
+  return (
+    <contextTheme.Consumer>
+      {props => {
+        return (
+          <div className={"input-group mb-3 header-group " + props}>
+            <input type="text" className="form-control input-form" ref={valueJob} onKeyDown={submitJob} />
+            <div className="input-group-append">
+              <button className="btn btn-outline-secondary" style={{ marginLeft: "5px" }} onClick={handlesubmitJob} type="button">submit</button>
             </div>
-            )
-          }}
-        </contextTheme.Consumer>
+          </div>
+        )
+      }}
+    </contextTheme.Consumer>
 
-    )
-  }
-}
+  )
+})
 export default memo(Header)

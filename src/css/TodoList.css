@@ -167,3 +167,12 @@
   .footer,.dark-theme .btn {
     color: #fff !important ;
   }
+  .totalJob{
+    color: black;
+  }
+  .btn:hover{
+    color: black !important;
+  }
+  .btn-active{
+    font-weight: 700;
+  }
