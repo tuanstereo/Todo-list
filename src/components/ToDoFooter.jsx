@@ -1,29 +1,31 @@
-import React, { memo } from 'react'
-import { statusJob } from '../constant/constJobTodo'
-import { contextTheme } from '../App';
-const ToDoFooter = (props) => {
-const {handletotalJob, totalJob, fillterByStatusJob} = props
+import React, { memo, useContext, useImperativeHandle, useState } from 'react'
+import { arrayJob, statusJob } from '../constant/constJobTodo'
+import { ContextTheme } from '../constant/constContext'
 const { active, fillterAll, unfinished } = statusJob
- const showJobArr = (action) => {
-    handletotalJob(action)
+const ToDoFooter = React.forwardRef((props, ref) => {
+  const [filterJob, setFilterJob] = useState(fillterAll)
+  const [lengthJobs, setLengthJobs] = useState(0)
+  const theme = useContext(ContextTheme)
+  const { filterJobs } = props
+  const showJobArr = (action) => {
+    setFilterJob(action)
+    filterJobs(action)
   }
-  console.log('footer');
+  useImperativeHandle(ref, () => ({
+    handleUpdatelengthJobs() {
+      setLengthJobs(arrayJob.length)
+    }
+}))
   return (
-    <contextTheme.Consumer>
-      {props => {
-        return (
-          <div className={'footer ' + props}>
-            <p className='totalJob' htmlFor="">{totalJob} Job</p>
-            <div>
-              <button className={fillterByStatusJob === fillterAll ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(fillterAll) }}>All</button>
-              <button className={fillterByStatusJob === active ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(active) }}>Done</button>
-              <button className={fillterByStatusJob === unfinished ? 'btn btn-active': 'btn'} onClick={() => { showJobArr(unfinished) }}>unfinished</button>
-            </div>
-          </div>
-        )
-      }}
-    </contextTheme.Consumer>
+    <div className={'footer ' + theme}>
+      <p className='totalJob' htmlFor="">{lengthJobs} Job</p>
+      <div>
+        <button className={filterJob === fillterAll ? 'btn btn-active' : 'btn'} onClick={() => { showJobArr(fillterAll) }}>All</button>
+        <button className={filterJob === active ? 'btn btn-active' : 'btn'} onClick={() => { showJobArr(active) }}>Done</button>
+        <button className={filterJob === unfinished ? 'btn btn-active' : 'btn'} onClick={() => { showJobArr(unfinished) }}>unfinished</button>
+      </div>
+    </div>
   )
 
-}
+})
 export default memo(ToDoFooter)

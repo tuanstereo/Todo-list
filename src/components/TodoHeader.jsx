@@ -1,11 +1,11 @@
-import React, {  memo, useImperativeHandle, useRef, useState } from 'react'
-import { contextTheme } from '../App';
-
+import React, { memo, useContext, useImperativeHandle, useRef, useState } from 'react'
+import { ContextTheme } from '../constant/constContext';
 const Header = React.forwardRef((props, ref) => {
   console.log('header');
+  const theme = useContext(ContextTheme)
   const [state, setState] = useState({ id: "", value: "" })
   const { id } = state
-  const {handleSubmitJob, handleUpdateJob} = props
+  const { handleSubmitJob, handleUpdateJob } = props
   const valueJob = useRef();
 
   const addjob = () => {
@@ -44,19 +44,13 @@ const Header = React.forwardRef((props, ref) => {
     id.length === 0 ? addjob() : updateJob()
   }
   return (
-    <contextTheme.Consumer>
-      {props => {
-        return (
-          <div className={"input-group mb-3 header-group " + props}>
-            <input type="text" className="form-control input-form" ref={valueJob} onKeyDown={submitJob} />
-            <div className="input-group-append">
-              <button className="btn btn-outline-secondary" style={{ marginLeft: "5px" }} onClick={handlesubmitJob} type="button">submit</button>
-            </div>
-          </div>
-        )
-      }}
-    </contextTheme.Consumer>
-
+    <div className={"input-group mb-3 header-group " + theme}>
+      <input type="text" className="form-control input-form" ref={valueJob} onKeyDown={submitJob} />
+      <div className="input-group-append">
+        <button className="btn btn-outline-secondary" style={{ marginLeft: "5px" }} onClick={handlesubmitJob} type="button">submit</button>
+      </div>
+    </div>
   )
+
 })
 export default memo(Header)

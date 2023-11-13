@@ -9,5 +9,7 @@ export const theme = {
     light: "light-theme",
     dark: "dark-theme"
 }
-export const pageSize = 10
+export const pageSize = 5
 export const lengthTriggerScroll = 300
+export let arrayJob = []
+export let arrrJobFilter = []
