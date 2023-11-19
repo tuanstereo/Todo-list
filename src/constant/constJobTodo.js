@@ -11,5 +11,5 @@ export const theme = {
 }
 export const pageSize = 5
 export const lengthTriggerScroll = 300
-export let arrayJob = []
+
 export let arrrJobFilter = []
