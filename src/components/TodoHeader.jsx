@@ -1,17 +1,12 @@
-import React, { memo, useContext, useImperativeHandle, useRef, useState } from 'react'
+import React, { memo, useContext, useImperativeHandle, useRef, useState } from 'react';
+import { ADD_JOB, UPDATE_VALUE_JOB } from '../constant/constAndFunctionApp';
 import { ContextTheme } from '../constant/constContext';
 const Header = React.forwardRef((props, ref) => {
-  console.log('header');
-  const theme = useContext(ContextTheme)
+  const theme = useContext(ContextTheme).themeActive
   const [state, setState] = useState({ id: "", value: "" })
   const { id } = state
-  const { handleSubmitJob, handleUpdateJob } = props
+  const { handleCRUDJob } = props
   const valueJob = useRef();
-
-  const addjob = () => {
-    handleSubmitJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: valueJob.current.value, done: false })
-    valueJob.current.value = ""
-  }
   useImperativeHandle(ref, () => ({
     showJob(id, value) {
       valueJob.current.value = value
@@ -22,26 +17,24 @@ const Header = React.forwardRef((props, ref) => {
     }
   }))
 
-  const updateJob = () => {
-    handleUpdateJob(parseInt(id), valueJob.current.value)
-    setState({
-      id: "",
-      value: ""
-    })
-    valueJob.current.value = ""
-  }
 
   const submitJob = (e) => {
     if (e.keyCode === 13) {
-      if (id.length === 0) {
-        addjob()
-      } else {
-        updateJob()
-      }
+      handlesubmitJob();
     }
   }
   const handlesubmitJob = () => {
-    id.length === 0 ? addjob() : updateJob()
+    if (!id) {
+      handleCRUDJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: valueJob.current.value, done: false }, ADD_JOB)
+      valueJob.current.value = ""
+    } else {
+      handleCRUDJob({id: parseInt(id), value: valueJob.current.value}, UPDATE_VALUE_JOB)
+      setState({
+        id: "",
+        value: ""
+      })
+      valueJob.current.value = ""
+    }
   }
   return (
     <div className={"input-group mb-3 header-group " + theme}>
