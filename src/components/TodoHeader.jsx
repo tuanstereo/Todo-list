@@ -1,5 +1,5 @@
 import React, { memo, useContext, useImperativeHandle, useRef, useState } from 'react';
-import { ADD_JOB, UPDATE_VALUE_JOB } from '../constant/constAndFunctionApp';
+import { ADD_JOB, UPDATE_VALUE_JOB, arrayJob } from '../constant/constAndFunctionApp';
 import { ContextTheme } from '../constant/constContext';
 const Header = React.forwardRef((props, ref) => {
   const theme = useContext(ContextTheme).themeActive
@@ -24,11 +24,16 @@ const Header = React.forwardRef((props, ref) => {
     }
   }
   const handlesubmitJob = () => {
+
     if (!id) {
-      handleCRUDJob({ id: Math.floor(Math.random() * (1000000) + 1), valueJob: valueJob.current.value, done: false }, ADD_JOB)
+      let job = {
+        id: Math.floor(Math.random() * (1000000) + 1), valueJob: valueJob.current.value, done: false
+      }
+      handleCRUDJob(job, ADD_JOB)
       valueJob.current.value = ""
     } else {
-      handleCRUDJob({id: parseInt(id), value: valueJob.current.value}, UPDATE_VALUE_JOB)
+      let job = { id: parseInt(id), value: valueJob.current.value }
+      handleCRUDJob(job, UPDATE_VALUE_JOB)
       setState({
         id: "",
         value: ""

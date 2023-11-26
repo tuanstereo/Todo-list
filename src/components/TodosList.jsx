@@ -1,30 +1,27 @@
-import React, { memo, useContext, useImperativeHandle, useRef } from 'react';
+import React, { memo, useContext } from 'react';
 
-import ScrollHOC from '../HOC/ScrollHOC';
+import scrollHOC from '../HOC/ScrollHOC';
 import { ContextTheme } from '../constant/constContext';
 import ListJob from './ListJob';
-import { SCROLL_JOB, checkScroll } from '../constant/constAndFunctionApp';
-export const toTalJobs = []
+import { SCROLL_JOB } from '../constant/constAndFunctionApp';
 
 const TodosList = React.forwardRef((props, ref) => {
-    const { handleUpdateJobs, jobs, addJobs } = props
+    const { handleCRUDJob, jobs = [], handleScroll } = props
     const theme = useContext(ContextTheme)
-    const refScroll = useRef();
-    useImperativeHandle(ref, () => ({ refScroll }))
 
-    const handleAddJobs = () => {
-        let lengthNewJobs = addJobs(refScroll)
-        lengthNewJobs && handleUpdateJobs(lengthNewJobs, SCROLL_JOB)
-        checkScroll.check = true
+    const getMoreData = () => {
+        let isGetData = handleScroll()
+        isGetData && handleCRUDJob(props.jobs.length, SCROLL_JOB);
+
     }
     return (
         <div className={theme.themeActive}>
             <h4>total {jobs.length}</h4>
             <hr style={{ marginBottom: 0 }} />
-            <div ref={refScroll} className='list-Job' onScroll={handleAddJobs}>
-                <ListJob jobs={jobs} handleUpdateJobs={handleUpdateJobs} />
+            <div ref={ref} className='list-Job' onScroll={getMoreData} >
+                <ListJob jobs={jobs} handleCRUDJob={handleCRUDJob} />
             </div>
         </div>
     )
 })
-export default memo(ScrollHOC(TodosList));
+export default memo(scrollHOC(TodosList));
