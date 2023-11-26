@@ -10,6 +10,6 @@ export const theme = {
     dark: "dark-theme"
 }
 export const pageSize = 5
-export const lengthTriggerScroll = 300
+export const lengthTriggerScroll = 40
 
 export let arrrJobFilter = []

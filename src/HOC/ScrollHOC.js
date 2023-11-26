@@ -1,20 +1,23 @@
-import React from 'react'
-import { checkScroll } from '../constant/constAndFunctionApp'
-import { lengthTriggerScroll, pageSize } from '../constant/constJobTodo'
-const ScrollHOC = (ComponentTodoList) => {
-
-  return React.forwardRef((props, ref) => {
-    const addJobs = (listJobRef) => {
-      let currentScrollbarTrack = listJobRef.current.scrollHeight - listJobRef.current.scrollTop
-      let currentLengthJob = listJobRef.current.children.length;
-      let totalLengthJob = props.toTalJob.length
-      if (currentScrollbarTrack <= lengthTriggerScroll && currentLengthJob < totalLengthJob && checkScroll.check) {
-        checkScroll.check = false
-        return currentLengthJob + pageSize
-      }
+  import React, { useEffect } from 'react'
+  import { lengthTriggerScroll } from '../constant/constJobTodo'
+  const scrollHOC = (ComponentTodoList) => {
+    const ref = React.createRef()  
+  let  isGetData = false
+    return (props) => {
+      const element = ref.current;
+      const {jobs} = props
+       useEffect( () => {
+        isGetData = false
+       },[jobs.length])
+      const handleScroll = () => {
+        let currentScrollbarTrack =  element.scrollTop + element.clientHeight
+        if (element.scrollHeight - currentScrollbarTrack < lengthTriggerScroll && !isGetData) {
+          isGetData = true
+          return isGetData
+        }
+      };  
+      return <ComponentTodoList {...props} handleScroll = {handleScroll} ref={ref}  />
     }
-    return <ComponentTodoList {...props} ref={ref} addJobs={addJobs} />
-  })
-}
+  }
+  export default scrollHOC
 
-export default ScrollHOC
